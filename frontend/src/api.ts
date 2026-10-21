@@ -1,8 +1,8 @@
-import { DashboardData } from "./types";
+import { type DashboardData } from "./types";
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-export async function fetchDashboardData(): Promise<DashboardData> | null{
+export async function fetchDashboardData(): Promise<DashboardData | null>{
     try {
         const res = await fetch(`${API_URL}/api/globals/dashboard`);
 

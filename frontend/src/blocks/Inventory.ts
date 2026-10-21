@@ -1,4 +1,4 @@
-import { InventoryBlock } from "../types";
+import { type InventoryBlock } from "../types";
 
 export const renderInventoryBlock = (data: InventoryBlock): string => {
     const booksHtml = data.booksList.map((item) => {

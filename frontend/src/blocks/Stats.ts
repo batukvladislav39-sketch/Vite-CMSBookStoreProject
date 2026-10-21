@@ -1,4 +1,4 @@
-import { StatsBlock } from "../types";
+import { type StatsBlock } from "../types";
 
 export const renderStatsBlock = (data: StatsBlock): string => {
     const cardsHtml = data.statsList.map((stat) => {

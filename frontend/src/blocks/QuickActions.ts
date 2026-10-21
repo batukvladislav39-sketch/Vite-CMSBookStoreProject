@@ -1,4 +1,4 @@
-import { QuickActionsBlock } from "../types";
+import { type QuickActionsBlock } from "../types";
 
 export const renderQuickActionsBlock = (data: QuickActionsBlock): string => {
   const buttonsHtml = data.actionsList.map((action) => {

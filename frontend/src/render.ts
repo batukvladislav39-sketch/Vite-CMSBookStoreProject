@@ -1,4 +1,4 @@
-import { DashboardData, DashboardWidget, UIState } from "./types";
+import { type DashboardData, type DashboardWidget, type UIState } from "./types";
 
 import { renderStatsBlock } from "./blocks/Stats";
 import { renderQuickActionsBlock } from "./blocks/QuickActions";
