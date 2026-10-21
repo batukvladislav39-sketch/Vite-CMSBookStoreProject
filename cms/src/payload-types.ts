@@ -90,10 +90,10 @@ export interface Config {
   };
   fallbackLocale: null;
   globals: {
-    Dashboard: Dashboard;
+    dashboard: Dashboard;
   };
   globalsSelect: {
-    Dashboard: DashboardSelect<false> | DashboardSelect<true>;
+    dashboard: DashboardSelect<false> | DashboardSelect<true>;
   };
   locale: null;
   widgets: {
@@ -358,7 +358,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Dashboard".
+ * via the `definition` "dashboard".
  */
 export interface Dashboard {
   id: number;
@@ -381,7 +381,7 @@ export interface Dashboard {
           }
         | {
             title: string;
-            actionList?:
+            actionsList?:
               | {
                   label: string;
                   actionId: string;
@@ -416,7 +416,7 @@ export interface Dashboard {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "Dashboard_select".
+ * via the `definition` "dashboard_select".
  */
 export interface DashboardSelect<T extends boolean = true> {
   title?: T;
@@ -442,7 +442,7 @@ export interface DashboardSelect<T extends boolean = true> {
           | T
           | {
               title?: T;
-              actionList?:
+              actionsList?:
                 | T
                 | {
                     label?: T;

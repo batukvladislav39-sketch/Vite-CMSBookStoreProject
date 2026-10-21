@@ -17,7 +17,7 @@ async function initApp() {
   const dashboardData = await fetchDashboardData();
 
   if (!dashboardData) {
-    renderUIState('error', appContainer, 'Не вдалося підключитися до базм даних книжкового магазину. Перевірте з\'єднання з сервером.')
+    renderUIState('error', appContainer, 'Failed to connect to the database. Check server connection.')
   } else {
     renderDashboard(dashboardData, appContainer);
   }

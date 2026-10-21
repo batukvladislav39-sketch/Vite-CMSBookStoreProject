@@ -4,7 +4,7 @@ import { QuickActionBlock } from "@/blocks/QuickActionsBlock";
 import { InventoryBlock } from "@/blocks/InventoryBlock";
 
 export const Dashboard: GlobalConfig = {
-    slug: 'Dashboard',
+    slug: 'dashboard',
     label: 'Панель управління',
     access: {
         read: () => true

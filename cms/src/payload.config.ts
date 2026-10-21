@@ -26,6 +26,7 @@ export default buildConfig({
   endpoints: [inventoryStatsEndpoint],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
+  cors: ['http://localhost:5173'],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
