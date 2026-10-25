@@ -27,8 +27,8 @@ export default buildConfig({
   onInit: seedPages,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
-  cors: ['http://localhost:5173'],
-  csrf: ['http://localhost:3000'],
+  cors: ['https://vite-frontend-teal.vercel.app'],
+  csrf: ['https://payload-cms-backend-one.vercel.app'],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
