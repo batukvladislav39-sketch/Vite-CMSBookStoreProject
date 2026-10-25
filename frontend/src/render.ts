@@ -1,50 +1,61 @@
-import { type DashboardData, type DashboardWidget, type UIState } from "./types";
+import type { PageDoc, SiteData, UIState } from './types';
+import { renderBlock } from './blocks';
+import { escapeHtml } from './utils/escapeHtml';
 
-import { renderStatsBlock } from "./blocks/Stats";
-import { renderQuickActionsBlock } from "./blocks/QuickActions";
-import { renderInventoryBlock } from "./blocks/Inventory";
+const SITE_NAME = 'BookAbyss';
 
-export const renderUIState = (state: UIState, container: HTMLElement | null, errorMessage?: string) => {
-    if (!container) return;
+export const renderUIState = (state: UIState, container: HTMLElement | null, message?: string) => {
+  if (!container) return;
 
-    if (state === 'loading') {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 50px; color: #64748b;">
-                <h2>⏳ Завантаження даних...</h2>
-                <p>Отримуємо актуальні залишки та статистику</p>
-            </div>
-        `;
-    } else if (state === 'error') {
-        container.innerHTML = `
-            <div style="text-align: center; padding: 50px; color: red;">
-                <h2>❌ Сталася помилка</h2>
-                <p>${errorMessage || 'Не вдалося завантажити систему управління.'}</p>
-                <button onclick="window.location.reload()" style="margin-top: 15px; padding: 10px 20px; cursor: pointer;">Спробувати знову</button>
-            </div>
-        `;
-    }
+  if (state === 'loading') {
+    container.innerHTML = `
+      <div class="state" role="status">
+        <div class="spinner" aria-hidden="true"></div>
+        <h2 class="state__title">Завантаження…</h2>
+      </div>`;
+  } else if (state === 'notFound') {
+    container.innerHTML = `
+      <div class="state">
+        <h2 class="state__title">Сторінку не знайдено</h2>
+        <p>${escapeHtml(message || 'Такої сторінки немає або її ще не створено в адмін-панелі.')}</p>
+        <a class="btn btn--primary" href="#/">На головну</a>
+      </div>`;
+    document.title = `Не знайдено — ${SITE_NAME}`;
+  } else if (state === 'error') {
+    container.innerHTML = `
+      <div class="state state--error" role="alert">
+        <h2 class="state__title">Сталася помилка</h2>
+        <p>${escapeHtml(message || 'Не вдалося завантажити дані з сервера.')}</p>
+        <button class="btn btn--primary" type="button" data-reload>Спробувати знову</button>
+      </div>`;
+    container.querySelector('[data-reload]')?.addEventListener('click', () => window.location.reload());
+  }
 };
 
-export const renderDashboard = (data: DashboardData, container: HTMLElement | null) => {
-    if (!container) return;
+export const renderPage = (page: PageDoc, site: SiteData, container: HTMLElement | null) => {
+  if (!container) return;
 
-    const widgetsHtml = data.layout.map((widget: DashboardWidget) => {
-        
-        switch (widget.blockType) {
-            case 'stats':
-                return renderStatsBlock(widget);
-            
-            case 'actions':
-                return renderQuickActionsBlock(widget);
-            
-            case 'inventory':
-                return renderInventoryBlock(widget);
-            
-            default:
-                console.warn(`Невідомий тип віджета: ${(widget as any).blockType}`);
-                return ''; 
-        }
-    }).join('');
+  const head =
+    page.slug === 'home'
+      ? ''
+      : `<header class="page-head">
+           <h1>${escapeHtml(page.title)}</h1>
+           ${page.description ? `<p>${escapeHtml(page.description)}</p>` : ''}
+         </header>`;
 
-    container.innerHTML = widgetsHtml;
+  const seen = new Set<string>();
+  const blocksHtml = (page.layout ?? [])
+    .map((widget) => {
+      const anchor = seen.has(widget.blockType) ? `${widget.blockType}-${widget.id}` : widget.blockType;
+      seen.add(widget.blockType);
+      return renderBlock(widget, site, anchor);
+    })
+    .join('');
+
+  container.innerHTML =
+    head +
+    (blocksHtml ||
+      `<div class="state"><h2 class="state__title">Поки що порожньо</h2><p>Додайте блоки на цю сторінку в адмін-панелі.</p></div>`);
+
+  document.title = page.slug === 'home' ? SITE_NAME : `${page.title} — ${SITE_NAME}`;
 };

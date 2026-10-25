@@ -1,20 +1,25 @@
-import { type QuickActionsBlock } from "../types";
+import type { QuickActionsBlock, SiteData } from '../types';
+import { escapeHtml } from '../utils/escapeHtml';
+import { linkAttrs } from '../utils/href';
 
-export const renderQuickActionsBlock = (data: QuickActionsBlock): string => {
-  const buttonsHtml = data.actionsList.map((action) => {
-    return `
-      <button class="card action-btn" data-action="${action.actionId}" style="cursor: pointer; text-align: center; font-weight: bold; background: #3b82f6; color: white; border: none; padding: 15px;">
-        ${action.label}
-      </button>
-    `;
-  }).join('');
+const VARIANTS = ['btn--primary', 'btn--secondary', 'btn--ghost'];
+
+export const renderQuickActionsBlock = (data: QuickActionsBlock, _site: SiteData, anchor: string): string => {
+  const id = escapeHtml(anchor);
+
+  const buttonsHtml = (data.actionsList ?? [])
+    .map(
+      (action, i) =>
+        `<a class="btn ${VARIANTS[i] ?? 'btn--ghost'}" ${linkAttrs(action.href)}>${escapeHtml(action.label)}</a>`,
+    )
+    .join('');
 
   return `
-    <section class="anatomy-section dashboard-widget" id="actions-${data.id}">
-      <h3>${data.title}</h3>
-      <div class="grid-container">
-        ${buttonsHtml}
+    <section class="panel" id="${id}" aria-labelledby="${id}-title">
+      <div class="panel__head">
+        <h2 class="panel__title" id="${id}-title">${escapeHtml(data.title)}</h2>
       </div>
+      <div class="actions">${buttonsHtml}</div>
     </section>
   `;
 };

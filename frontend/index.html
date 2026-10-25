@@ -1,13 +1,64 @@
 <!doctype html>
-<html lang="en">
+<html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <meta name="description" content="Облік залишків, продажів і постачання книжкового магазину" />
+    <meta name="theme-color" content="#0b3a32" />
+    <title>BookAbyss</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap"
+    />
   </head>
   <body>
-    <div id="app-root"></div>
+    <nav class="nav" aria-label="Головна навігація">
+      <div class="wrap nav__inner">
+        <a class="brand" href="#/">BookAbyss</a>
+        <ul class="nav__links">
+          <li><a href="#/">Головна</a></li>
+          <li><a href="#/overview">Огляд</a></li>
+          <li><a href="#/stats">Статистика</a></li>
+          <li><a href="#/inventory">Склад</a></li>
+        </ul>
+        <a class="btn btn--primary" href="http://localhost:3000/admin" target="_blank" rel="noopener">Адмінка</a>
+      </div>
+    </nav>
+
+    <main id="app-root"></main>
+
+    <footer class="footer">
+      <div class="wrap footer__grid">
+        <div>
+          <a class="brand" href="#/">BookAbyss</a>
+          <p>Облік залишків, продажів і постачання для книжкового магазину в одному місці.</p>
+        </div>
+        <div>
+          <h3>Розділи</h3>
+          <ul>
+            <li><a href="#/">Головна</a></li>
+            <li><a href="#/overview">Огляд</a></li>
+            <li><a href="#/stats">Статистика</a></li>
+            <li><a href="#/inventory">Склад</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Керування</h3>
+          <ul>
+            <li><a href="http://localhost:3000/admin" target="_blank" rel="noopener">Адмін-панель</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="wrap footer__bottom">
+        <span>© 2026 BookAbyss</span>
+        <span>Контент керується через адмін-панель</span>
+      </div>
+    </footer>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -1,99 +1,138 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <title>Анатомія Dashboard: Облік книжкового магазину</title>
-    <style>
-        body { font-family: system-ui, sans-serif; background: #f1f5f9; margin: 0; padding: 20px; color: #334155; }
-        .anatomy-section { border: 2px dashed #94a3b8; margin-bottom: 30px; padding: 25px 20px 20px; background: #ffffff; position: relative; border-radius: 8px; }
-        .anatomy-label { position: absolute; top: -12px; left: 15px; background: #475569; color: white; padding: 4px 10px; font-size: 12px; font-weight: bold; border-radius: 4px; }
-        
-        /* Стилі для карток статистики та дій */
-        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; }
-        .card { padding: 15px; border: 1px solid #e2e8f0; border-radius: 6px; background: #f8fafc; }
-        .card-title { font-size: 0.85rem; color: #64748b; }
-        .card-value { font-size: 1.5rem; font-weight: bold; margin: 5px 0; color: #0f172a; }
-        .card-trend { font-size: 0.8rem; color: #10b981; }
-        
-        /* Стилі для таблиці інвентаризації */
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #e2e8f0; }
-        th { background: #f8fafc; font-weight: 600; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BookManager Pro — Робочий стіл</title>
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
-    <header class="anatomy-section">
-        <span class="anatomy-label">Layout: Header (Глобальна конфігурація)</span>
-        <h2>BookManager Pro — Робочий стіл</h2>
-    </header>
+<nav class="nav" aria-label="Головна навігація">
+  <div class="wrap nav__inner">
+    <a class="brand" href="/"><span class="brand__mark"></span>BookManager Pro</a>
+    <ul class="nav__links">
+      <li><a href="#overview" aria-current="page">Огляд</a></li>
+      <li><a href="#inventory">Склад</a></li>
+      <li><a href="#sales">Продажі</a></li>
+      <li><a href="#supplies">Постачання</a></li>
+      <li><a href="#reports">Звіти</a></li>
+    </ul>
+    <a class="btn btn--primary" href="#sales">Новий продаж</a>
+  </div>
+</nav>
 
-    <main id="app-root">
-        <!-- ВІДЖЕТ 1: Статистика -->
-        <section class="anatomy-section" id="stats">
-            <span class="anatomy-label">Block: StatsBlock</span>
-            <h3>Огляд за сьогодні</h3>
-            <div class="grid-container">
-                <div class="card">
-                    <div class="card-title">Продажі</div>
-                    <div class="card-value">12 450 ₴</div>
-                    <div class="card-trend">+15% до вчора</div>
-                </div>
-                <div class="card">
-                    <div class="card-title">Продано книг</div>
-                    <div class="card-value">42 шт.</div>
-                    <div class="card-trend">-2% до вчора</div>
-                </div>
-            </div>
-        </section>
+<main id="app-root">
 
-        <!-- ВІДЖЕТ 2: Швидкі дії -->
-        <section class="anatomy-section" id="actions">
-            <span class="anatomy-label">Block: QuickActionsBlock</span>
-            <h3>Операції</h3>
-            <div class="grid-container">
-                <button class="card" style="cursor: pointer; text-align: center; font-weight: bold; background: #3b82f6; color: white; border: none;">
-                    + Новий продаж
-                </button>
-                <button class="card" style="cursor: pointer; text-align: center; font-weight: bold; background: #10b981; color: white; border: none;">
-                    📦 Прийом товару
-                </button>
-            </div>
-        </section>
+  <!-- Блок: HeroBlock — виручка і продажі по годинах -->
+  <section class="hero" id="overview">
+    <div class="wrap hero__grid">
+      <div>
+        <p class="hero__label">Виручка сьогодні</p>
+        <p class="hero__value">12 450<small>₴</small></p>
+        <p class="hero__sub"><span class="trend trend--up">+15% до вчора.</span> 42 книги у 31 чеку.</p>
+      </div>
+      <div>
+        <div class="shelf" role="img" aria-label="Продажі по годинах з 9:00 до 20:00; пік о 16:00">
+          <span class="spine" tabindex="0" style="--h:35%;--c:var(--oxblood);--i:0;--w:1" data-tip="9:00 · 640 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:50%;--c:var(--navy);--i:1;--w:1.3" data-tip="10:00 · 910 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:28%;--c:var(--mustard);--i:2;--w:.9" data-tip="11:00 · 520 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:62%;--c:var(--forest);--i:3;--w:1.1" data-tip="12:00 · 1 120 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:80%;--c:var(--plum);--i:4;--w:1" data-tip="13:00 · 1 480 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:45%;--c:var(--slate);--i:5;--w:1.2" data-tip="14:00 · 830 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:70%;--c:var(--oxblood);--i:6;--w:.9" data-tip="15:00 · 1 290 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:95%;--c:var(--navy);--i:7;--w:1.1" data-tip="16:00 · 1 760 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:66%;--c:var(--mustard);--i:8;--w:1" data-tip="17:00 · 1 210 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:40%;--c:var(--forest);--i:9;--w:1.3" data-tip="18:00 · 740 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:55%;--c:var(--plum);--i:10;--w:.9" data-tip="19:00 · 1 010 ₴"></span>
+          <span class="spine" tabindex="0" style="--h:30%;--c:var(--slate);--i:11;--w:1" data-tip="20:00 · 550 ₴"></span>
+        </div>
+        <p class="hero__caption">Продажі по годинах, 9:00–20:00. Наведіть на корінець, щоб побачити суму.</p>
+      </div>
+    </div>
+  </section>
 
-        <!-- ВІДЖЕТ 3: Інвентаризація (Таблиця) -->
-        <section class="anatomy-section" id="inventory">
-            <span class="anatomy-label">Block: InventoryBlock</span>
-            <h3>Критичні залишки на складі</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ISBN</th>
-                        <th>Назва книги</th>
-                        <th>Автор</th>
-                        <th>Залишок</th>
-                        <th>Ціна</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>978-617-12-98</td>
-                        <td>1984</td>
-                        <td>Джордж Орвелл</td>
-                        <td style="color: red; font-weight: bold;">2 шт.</td>
-                        <td>350 ₴</td>
-                    </tr>
-                    <tr>
-                        <td>978-966-982-1</td>
-                        <td>Дюна</td>
-                        <td>Френк Герберт</td>
-                        <td>5 шт.</td>
-                        <td>420 ₴</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-    </main>
+  <div class="wrap stack">
+
+    <!-- Блок: StatsBlock -->
+    <section class="panel" id="stats" aria-labelledby="stats-title">
+      <div class="panel__head">
+        <h2 class="panel__title" id="stats-title">Огляд за сьогодні</h2>
+        <p class="panel__hint">Порівняно з учора</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><p class="stat__label">Середній чек</p><p class="stat__value">402<small>₴</small></p><p class="trend trend--up">+4%</p></div>
+        <div class="stat"><p class="stat__label">Продано книг</p><p class="stat__value">42<small>шт.</small></p><p class="trend trend--down">−2%</p></div>
+        <div class="stat"><p class="stat__label">Вартість залишків</p><p class="stat__value">186 300<small>₴</small></p><p class="trend trend--flat">без змін</p></div>
+      </div>
+    </section>
+
+    <div class="duo">
+      <!-- Блок: QuickActionsBlock -->
+      <section class="panel" id="actions" aria-labelledby="actions-title">
+        <div class="panel__head"><h2 class="panel__title" id="actions-title">Швидкі операції</h2></div>
+        <div class="actions">
+          <button class="btn btn--primary" type="button">Новий продаж</button>
+          <button class="btn btn--secondary" type="button">Прийом товару</button>
+          <button class="btn btn--ghost" type="button">Додати книгу</button>
+        </div>
+      </section>
+
+      <!-- Блок: RecentSalesBlock -->
+      <section class="panel" id="sales" aria-labelledby="sales-title">
+        <div class="panel__head"><h2 class="panel__title" id="sales-title">Останні продажі</h2><p class="panel__hint">Сьогодні</p></div>
+        <ul class="feed">
+          <li><span><time>17:42</time>1984, Дюна</span><b>770 ₴</b></li>
+          <li><span><time>17:15</time>Тіні забутих предків</span><b>190 ₴</b></li>
+          <li><span><time>16:58</time>Дюна ×2</span><b>840 ₴</b></li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Блок: InventoryBlock -->
+    <section class="panel" id="inventory" aria-labelledby="inventory-title">
+      <div class="panel__head">
+        <h2 class="panel__title" id="inventory-title">Стан складу</h2>
+        <input class="search" type="search" placeholder="Пошук за назвою або ISBN" aria-label="Пошук по складу">
+      </div>
+      <div class="table-wrap">
+        <table class="inventory">
+          <thead><tr><th>ISBN</th><th>Назва книги</th><th>Автор</th><th>Рік</th><th>Залишок</th><th>Статус</th><th class="num">Ціна</th></tr></thead>
+          <tbody>
+            <tr><td class="isbn">978-617-12-98</td><td class="book-title">1984</td><td>Джордж Орвелл</td><td>1949</td>
+              <td><div class="stock stock--low" style="--fill:20%"><span class="stock__num">2 шт.</span><span class="stock__bar"></span></div></td>
+              <td><span class="badge badge--low">Закінчується</span></td><td class="num">350 ₴</td></tr>
+            <tr><td class="isbn">978-966-982-1</td><td class="book-title">Дюна</td><td>Френк Герберт</td><td>1965</td>
+              <td><div class="stock" style="--fill:70%"><span class="stock__num">14 шт.</span><span class="stock__bar"></span></div></td>
+              <td><span class="badge badge--ok">В наявності</span></td><td class="num">420 ₴</td></tr>
+            <tr><td class="isbn">978-966-03-77</td><td class="book-title">Тіні забутих предків</td><td>Михайло Коцюбинський</td><td>1911</td>
+              <td><div class="stock stock--out" style="--fill:0%"><span class="stock__num">0 шт.</span><span class="stock__bar"></span></div></td>
+              <td><span class="badge badge--out">Немає</span></td><td class="num">190 ₴</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__grid">
+    <div>
+      <a class="brand" href="/"><span class="brand__mark"></span>BookManager Pro</a>
+      <p>Облік залишків, продажів і постачання для книжкового магазину в одному місці.</p>
+    </div>
+    <div>
+      <h3>Розділи</h3>
+      <ul><li><a href="#overview">Огляд</a></li><li><a href="#inventory">Склад</a></li><li><a href="#sales">Продажі</a></li><li><a href="#supplies">Постачання</a></li></ul>
+    </div>
+    <div>
+      <h3>Допомога</h3>
+      <ul><li><a href="#">Інструкція для касира</a></li><li><a href="#">Імпорт книг</a></li><li><a href="#">Зв'язатися з підтримкою</a></li></ul>
+    </div>
+  </div>
+  <div class="wrap footer__bottom"><span>© 2026 BookManager Pro</span><span>Дані оновлюються в реальному часі</span></div>
+</footer>
 
 </body>
 </html>

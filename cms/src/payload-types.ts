@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     books: Book;
+    pages: Page;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +81,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     books: BooksSelect<false> | BooksSelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -89,12 +91,8 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {
-    dashboard: Dashboard;
-  };
-  globalsSelect: {
-    dashboard: DashboardSelect<false> | DashboardSelect<true>;
-  };
+  globals: {};
+  globalsSelect: {};
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -185,6 +183,95 @@ export interface Book {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  /**
+   * home = головна. Для меню: overview, inventory, stats. Латиниця, цифри, дефіс.
+   */
+  slug: string;
+  description?: string | null;
+  layout?:
+    | (
+        | {
+            eyebrow?: string | null;
+            title: string;
+            text?: string | null;
+            primaryLabel?: string | null;
+            /**
+             * Сторінка сайту (#/inventory), шлях в адмінці (/admin/...) або https://…
+             */
+            primaryHref?: string | null;
+            secondaryLabel?: string | null;
+            secondaryHref?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'intro';
+          }
+        | {
+            title?: string | null;
+            items?:
+              | {
+                  title: string;
+                  text?: string | null;
+                  /**
+                   * Наприклад #/inventory
+                   */
+                  href?: string | null;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'features';
+          }
+        | {
+            title: string;
+            subtitle?: string | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'hero';
+          }
+        | {
+            title: string;
+            metrics?: ('totalUnits' | 'titlesCount' | 'stockValue' | 'lowStockCount' | 'outOfStockCount')[] | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'stats';
+          }
+        | {
+            title: string;
+            actionsList?:
+              | {
+                  label: string;
+                  /**
+                   * Шлях в адмінці (наприклад /admin/collections/books/create) або повна адреса https://…
+                   */
+                  href: string;
+                  id?: string | null;
+                }[]
+              | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'actions';
+          }
+        | {
+            title: string;
+            limit?: number | null;
+            onlyLow?: boolean | null;
+            id?: string | null;
+            blockName?: string | null;
+            blockType: 'inventory';
+          }
+      )[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -218,6 +305,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'books';
         value: number | Book;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -318,6 +409,88 @@ export interface BooksSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  description?: T;
+  layout?:
+    | T
+    | {
+        intro?:
+          | T
+          | {
+              eyebrow?: T;
+              title?: T;
+              text?: T;
+              primaryLabel?: T;
+              primaryHref?: T;
+              secondaryLabel?: T;
+              secondaryHref?: T;
+              id?: T;
+              blockName?: T;
+            };
+        features?:
+          | T
+          | {
+              title?: T;
+              items?:
+                | T
+                | {
+                    title?: T;
+                    text?: T;
+                    href?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        hero?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              id?: T;
+              blockName?: T;
+            };
+        stats?:
+          | T
+          | {
+              title?: T;
+              metrics?: T;
+              id?: T;
+              blockName?: T;
+            };
+        actions?:
+          | T
+          | {
+              title?: T;
+              actionsList?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    id?: T;
+                  };
+              id?: T;
+              blockName?: T;
+            };
+        inventory?:
+          | T
+          | {
+              title?: T;
+              limit?: T;
+              onlyLow?: T;
+              id?: T;
+              blockName?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -355,125 +528,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "dashboard".
- */
-export interface Dashboard {
-  id: number;
-  title: string;
-  layout?:
-    | (
-        | {
-            title: string;
-            statsList?:
-              | {
-                  label: string;
-                  value: string;
-                  trend: string;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'stats';
-          }
-        | {
-            title: string;
-            actionsList?:
-              | {
-                  label: string;
-                  actionId: string;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'actions';
-          }
-        | {
-            title: string;
-            booksList?:
-              | {
-                  isbn: string;
-                  title: string;
-                  year: number;
-                  author: string;
-                  stockLevel: number;
-                  price: number;
-                  id?: string | null;
-                }[]
-              | null;
-            id?: string | null;
-            blockName?: string | null;
-            blockType: 'inventory';
-          }
-      )[]
-    | null;
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "dashboard_select".
- */
-export interface DashboardSelect<T extends boolean = true> {
-  title?: T;
-  layout?:
-    | T
-    | {
-        stats?:
-          | T
-          | {
-              title?: T;
-              statsList?:
-                | T
-                | {
-                    label?: T;
-                    value?: T;
-                    trend?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        actions?:
-          | T
-          | {
-              title?: T;
-              actionsList?:
-                | T
-                | {
-                    label?: T;
-                    actionId?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-        inventory?:
-          | T
-          | {
-              title?: T;
-              booksList?:
-                | T
-                | {
-                    isbn?: T;
-                    title?: T;
-                    year?: T;
-                    author?: T;
-                    stockLevel?: T;
-                    price?: T;
-                    id?: T;
-                  };
-              id?: T;
-              blockName?: T;
-            };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

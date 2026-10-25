@@ -8,8 +8,9 @@ import sharp from 'sharp'
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Books } from './collections/Books'
-import { Dashboard } from './globals/Dashboard'
-import { inventoryStatsEndpoint } from './endpoints/InventoryStats'
+import { Pages } from './collections/Pages'
+import { statsEndpoint } from './endpoints/Stats'
+import { seedPages } from './seed'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,12 +22,13 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Books],
-  globals: [Dashboard],
-  endpoints: [inventoryStatsEndpoint],
+  collections: [Users, Media, Books, Pages],
+  endpoints: [statsEndpoint],
+  onInit: seedPages,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   cors: ['http://localhost:5173'],
+  csrf: ['http://localhost:5173'],
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },

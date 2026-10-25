@@ -1,22 +1,24 @@
-import { type DashboardData } from "./types";
+import type { Book, PageDoc, SiteData, StockStats } from './types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+export const API_URL: string = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
-export async function fetchDashboardData(): Promise<DashboardData | null>{
-    try {
-        const res = await fetch(`${API_URL}/api/globals/dashboard`);
+async function getJson<T>(path: string): Promise<T> {
+  const res = await fetch(`${API_URL}${path}`);
+  if (!res.ok) throw new Error(`${path}: статус ${res.status}`);
+  return (await res.json()) as T;
+}
 
-        if (!res.ok) {
-            throw new Error(`An error has occured. Status: ${res.status}`)
-        }
+export async function fetchPage(slug: string): Promise<PageDoc | null> {
+  const res = await getJson<{ docs: PageDoc[] }>(
+    `/api/pages?where[slug][equals]=${encodeURIComponent(slug)}&limit=1&depth=0`,
+  );
+  return res.docs[0] ?? null;
+}
 
-        const data: DashboardData = await res.json();
-
-        return data;
-
-    } catch(err) {
-        console.log(`Error: ${err}`);
-
-        return null;
-    }
+export async function fetchSiteData(): Promise<SiteData> {
+  const [stats, books] = await Promise.all([
+    getJson<StockStats>('/api/stats'),
+    getJson<{ docs: Book[] }>('/api/books?limit=100&depth=0&sort=title'),
+  ]);
+  return { stats, books: books.docs };
 }
